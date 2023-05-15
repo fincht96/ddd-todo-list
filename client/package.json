@@ -23,7 +23,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack serve --mode development",
-    "test": "jest"
+    "test": "jest",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "jest-environment-jsdom": "^29.5.0",
