@@ -1,0 +1,13 @@
+{
+  "name": "ddd-todo-list",
+  "packageManager": "yarn@3.5.1",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "client": "yarn workspace @ddd-todo-list/client start",
+    "server": "yarn workspace @ddd-todo-list/server start"
+  }
+}
