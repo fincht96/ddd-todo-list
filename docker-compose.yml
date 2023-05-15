@@ -1,0 +1,53 @@
+version: '3.3'
+services:
+  _build:
+    # as dockerfile also provide, will create image ddd-todo-list
+    image: ddd-todo-list
+    command: ['echo', 'build completed']
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  shell:
+    image: ddd-todo-list
+    container_name: shell
+    depends_on:
+      - _build
+    command: tail -f /dev/null
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+
+  server:
+    depends_on:
+      - _build
+    container_name: 'server'
+    command: ['yarn', 'workspace', '@ddd-todo-list/server', 'start:dev']
+    image: ddd-todo-list
+    build:
+      context: .
+      target: dev-server
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/home/app/
+      - ./server/node_modules:/home/app/server/node_modules
+    environment:
+      - API_PORT=4000
+
+  client:
+    depends_on:
+      - _build
+    container_name: 'client'
+    command: ['yarn', 'workspace', '@ddd-todo-list/client', 'start']
+    image: ddd-todo-list
+    build:
+      context: .
+      target: dev-client
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/app
+      - ./client/node_modules:/home/app/client/node_modules
+    environment:
+      - PORT=3000
