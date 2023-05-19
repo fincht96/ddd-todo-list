@@ -16,41 +16,25 @@ services:
     command: tail -f /dev/null
     volumes:
       - .:/home/app
-      - /home/app/node_modules
+      - ./node_modules:/home/app/node_modules
 
   server:
     depends_on:
       - _build
     container_name: 'server'
-    command: ['yarn', 'workspace', '@ddd-todo-list/server', 'start:dev']
+    command: ['yarn', 'start:dev']
     image: ddd-todo-list
     build:
       context: .
-      target: dev-server
+      target: dev
     ports:
       - 4000:4000
     volumes:
       - .:/home/app/
-      - ./server/node_modules:/home/app/server/node_modules
+      - ./node_modules:/home/app/node_modules
     environment:
-      - API_PORT=4000
-
-  client:
-    depends_on:
-      - _build
-    container_name: 'client'
-    command: ['yarn', 'workspace', '@ddd-todo-list/client', 'start']
-    image: ddd-todo-list
-    build:
-      context: .
-      target: dev-client
-    ports:
-      - 3000:3000
-    volumes:
-      - .:/home/app
-      - ./client/node_modules:/home/app/client/node_modules
-    environment:
-      - PORT=3000
+      - PORT=4000
+      - NODE_ENV=development
 
   db:
     image: postgres:14.1-alpine

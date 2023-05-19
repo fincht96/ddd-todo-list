@@ -2,7 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # perhaps only continue if previous passed? Rather than printing out lots of error messages
-yarn workspace @ddd-todo-list/client type-check
-yarn workspace @ddd-todo-list/server type-check
+yarn type-check
 yarn format
 yarn lint

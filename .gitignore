@@ -6,6 +6,7 @@
 !.yarn/versions
 node_modules
 build
+dist
 
 
 # Swap the comments on the following lines if you don't wish to use zero-installs

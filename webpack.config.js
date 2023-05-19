@@ -1,8 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './client/src/index.js',
   devtool: 'inline-source-map',
   output: {
     filename: 'main.js',
@@ -16,7 +17,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'public', 'index.html')
+      template: path.join(__dirname, 'client/public', 'index.html')
+    }),
+    new CopyPlugin({
+      patterns: [{ from: 'client/public/assets', to: 'assets' }]
     })
   ],
   module: {
@@ -30,12 +34,14 @@ module.exports = {
       // `ts` and `tsx` files are parsed using `ts-loader`
       {
         test: /\.(ts|tsx)$/,
-        loader: 'ts-loader'
+        loader: 'ts-loader',
+        options: {
+          configFile: path.join(__dirname, 'client/tsconfig.webpack.json')
+        }
       }
     ]
-  },
-  // pass all js files through Babel
-  resolve: {
-    extensions: ['*', '.js', '.jsx']
   }
+  // resolve: {
+  //   extensions: ['*', '.js', '.jsx']
+  // }
 };

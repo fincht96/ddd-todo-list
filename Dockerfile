@@ -2,7 +2,7 @@ FROM node:19 AS base
 
 RUN apt-get update -y & apt-get upgrade -y
 
-RUN yarn set version stable
+RUN yarn set-version 3.5.1
 RUN yarn --version
 
 WORKDIR /home/app
@@ -11,14 +11,25 @@ FROM base AS deps
 
 COPY package.json .
 COPY yarn.lock .
-COPY server/package.json ./server/package.json
-COPY client/app/package.json ./client/app/package.json
 
 RUN yarn
 
+From deps as dev
+ARG PORT
+ENV PORT=${PORT}
+ARG NODE_ENV
+ENV NODE_ENV=${NODE_ENV}
 
-From deps as dev-server
 
-ARG API_PORT
-ENV API_PORT=${API_PORT}
+From deps as prod
+ARG PORT
+ENV PORT=${PORT}
+ARG NODE_ENV
+ENV NODE_ENV=${NODE_ENV}
 
+
+
+
+
+
+# for prod 
