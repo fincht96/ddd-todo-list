@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const App = () => {
-  useEffect(() => {
-    console.log('hello world spelt correctly');
-  });
-
-  return <div>My app is awesome! jeff hush you this is cool</div>;
+  return (
+    <div>My app is awesome! Perhaps it could do with some more content....</div>
+  );
 };
 
 export default App;

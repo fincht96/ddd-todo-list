@@ -1,13 +1,11 @@
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize(
-  'postgres://postgres:postgres@db:5432/postgres'
-);
+const sequelize = new Sequelize(`${process.env.DATABASE_URL}`);
 
 sequelize
   .authenticate()
   .then(() => {
-    console.log('Connection has been established successfully. or has it');
+    console.log('Connection has been established successfully');
   })
   .catch((err) => {
     console.log(err);

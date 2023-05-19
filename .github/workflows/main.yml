@@ -11,7 +11,7 @@ on:
   #     - prod
 
 jobs:
-  deployment:
+  ddd_todo_list_deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Cloning repo
@@ -36,8 +36,42 @@ jobs:
       - name: Run formatting
         run: yarn format
 
-      - name: Run client tests
+      - name: Client tests
         run: yarn test:client
 
-      - name: Run server tests
+      - name: Server tests
         run: yarn test:server
+
+      - name: Set up qemu
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to docker hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        id: build_and_push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: fincht96/ddd-todo-list-prod:latest
+          target: prod
+          context: .
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        # enable verbose ssh output
+        env:
+          GIT_SSH_COMMAND: 'ssh -vvv'
+        with:
+          git_push_flags: '--force -vvv'
+          git_remote_url: 'ssh://dokku@${{ secrets.DOKKU_IP }}:22/ddd-todo-list-prod'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          deploy_docker_image: fincht96/ddd-todo-list-prod:latest@${{ steps.build_and_push.outputs.digest }}
+          # enable shell trace mode
+          trace: '1'
