@@ -1,3 +1,4 @@
+import { generateUniqueId } from '../../../shared/utils/generateUniqueId';
 import { TaskDescription } from './TaskDescription';
 import { TaskTitle } from './TaskTitle';
 
@@ -15,6 +16,10 @@ export class Task {
   private constructor(props: TaskProps, uniqueId: string) {
     this.props = props;
     this.uniqueId = uniqueId;
+  }
+
+  get taskId(): string {
+    return this.uniqueId;
   }
 
   get title(): TaskTitle {
@@ -44,7 +49,7 @@ export class Task {
     this.props = newProps;
   }
 
-  public static create(props: TaskProps, uniqueId: string) {
-    return new Task(props, uniqueId);
+  public static create(props: TaskProps, uniqueId?: string) {
+    return new Task(props, uniqueId ?? generateUniqueId());
   }
 }

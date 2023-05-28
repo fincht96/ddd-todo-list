@@ -1,5 +1,4 @@
 import { Task, TaskProps } from './Task';
-import { v4 as uuidv4 } from 'uuid';
 import { TaskTitle } from './TaskTitle';
 import { TaskDescription } from './TaskDescription';
 
@@ -26,7 +25,7 @@ describe('Task', () => {
   };
 
   test('should create task', () => {
-    const task = Task.create(oldProps, uuidv4());
+    const task = Task.create(oldProps);
     expect(task.title.value).toEqual('Example title');
     expect(task.description.value).toEqual('This is an example description');
     expect(task.dueDate).toEqual(currentDate);
@@ -34,7 +33,7 @@ describe('Task', () => {
   });
 
   test('should update task', () => {
-    const task = Task.create(oldProps, uuidv4());
+    const task = Task.create(oldProps);
     task.updateTaskProps(newProps);
     expect(task.title.value).toEqual('Another Example title');
     expect(task.description.value).toEqual(
@@ -43,4 +42,6 @@ describe('Task', () => {
     expect(task.dueDate).toEqual(newDate);
     expect(task.isCompleted).toEqual(true);
   });
+
+  // should not create a new task with same uid as one already exists
 });
