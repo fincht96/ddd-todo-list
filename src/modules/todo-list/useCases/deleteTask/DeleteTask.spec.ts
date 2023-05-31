@@ -1,6 +1,8 @@
 import { toError } from '../../../../shared/core/Error';
 import { Task } from '../../domain/Task';
+import { TaskCompleted } from '../../domain/TaskCompleted';
 import { TaskDescription } from '../../domain/TaskDescription';
+import { TaskDueDate } from '../../domain/TaskDueDate';
 import { TaskTitle } from '../../domain/TaskTitle';
 import { MockTaskRepo } from '../../repos/TaskRepo/TaskRepo.mock';
 import { DeleteTask } from './DeleteTask';
@@ -8,64 +10,67 @@ import { DeleteTaskDTO } from './DeleteTaskDTO';
 
 describe('DeleteTask', () => {
   test('should delete existing task', async () => {
-    const taskToDelete = Task.create({
-      title: TaskTitle.create({ value: 'task title' }),
-      description: TaskDescription.create({ value: 'task description' }),
-      isCompleted: false,
-      dueDate: new Date()
+    const firstDate = new Date(Date.now() + 60 * 1000);
+
+    const taskToDeleteOrErrorResult = Task.create({
+      title: TaskTitle.create({ value: 'Example title' }).getValue(),
+      description: TaskDescription.create({
+        value: 'This is an example description'
+      }).getValue(),
+      dueDate: TaskDueDate.create({ value: firstDate.getTime() }).getValue(),
+      isCompleted: TaskCompleted.create({ value: false }).getValue()
     });
-    const taskRepo = new MockTaskRepo([taskToDelete]);
+
+    const taskRepo = new MockTaskRepo([taskToDeleteOrErrorResult.getValue()]);
     const deleteTaskUseCase = new DeleteTask(taskRepo);
 
     const deleteTaskDTO: DeleteTaskDTO = {
-      taskId: taskToDelete.taskId
+      taskId: taskToDeleteOrErrorResult.getValue().taskId
     };
 
-    const originalTask = await taskRepo.getTaskById(taskToDelete.taskId);
-
-    expect(originalTask.title).toBe(taskToDelete.title);
-    expect(originalTask.description).toBe(taskToDelete.description);
-    expect(originalTask.dueDate).toBe(taskToDelete.dueDate);
-    expect(originalTask.isCompleted).toBe(taskToDelete.isCompleted);
-    await deleteTaskUseCase.execute(deleteTaskDTO);
+    const response = await deleteTaskUseCase.execute(deleteTaskDTO);
+    expect(response.isRight()).toBe(true);
 
     try {
-      await taskRepo.getTaskById(taskToDelete.taskId);
+      await taskRepo.getTaskById(taskToDeleteOrErrorResult.getValue().taskId);
     } catch (error: unknown) {
       expect(toError(error).message).toBe(
-        `Unable to find a task with id ${taskToDelete.taskId}`
+        `Unable to find a task with id ${
+          taskToDeleteOrErrorResult.getValue().taskId
+        }`
       );
     }
   });
 
   test('should not delete, as task does not exist', async () => {
-    const taskToDelete = Task.create({
-      title: TaskTitle.create({ value: 'task title' }),
-      description: TaskDescription.create({ value: 'task description' }),
-      isCompleted: false,
-      dueDate: new Date()
+    const firstDate = new Date(Date.now() + 60 * 1000);
+
+    const taskToDeleteOrErrorResult = Task.create({
+      title: TaskTitle.create({ value: 'Example title' }).getValue(),
+      description: TaskDescription.create({
+        value: 'This is an example description'
+      }).getValue(),
+      dueDate: TaskDueDate.create({ value: firstDate.getTime() }).getValue(),
+      isCompleted: TaskCompleted.create({ value: false }).getValue()
     });
-    const taskRepo = new MockTaskRepo([taskToDelete]);
+
+    const taskRepo = new MockTaskRepo([taskToDeleteOrErrorResult.getValue()]);
     const deleteTaskUseCase = new DeleteTask(taskRepo);
 
     const deleteTaskDTO: DeleteTaskDTO = {
-      taskId: taskToDelete.taskId
+      taskId: 'some-random-id'
     };
 
-    const originalTask = await taskRepo.getTaskById(taskToDelete.taskId);
-
-    expect(originalTask.title).toBe(taskToDelete.title);
-    expect(originalTask.description).toBe(taskToDelete.description);
-    expect(originalTask.dueDate).toBe(taskToDelete.dueDate);
-    expect(originalTask.isCompleted).toBe(taskToDelete.isCompleted);
-    await deleteTaskUseCase.execute(deleteTaskDTO);
-
-    try {
-      await taskRepo.getTaskById(taskToDelete.taskId);
-    } catch (error: unknown) {
-      expect(toError(error).message).toBe(
-        `Unable to find a task with id ${taskToDelete.taskId}`
-      );
-    }
+    const response = await deleteTaskUseCase.execute(deleteTaskDTO);
+    const tasks = await taskRepo.getTasks({
+      offset: 0,
+      limit: 10,
+      taskType: 'any'
+    });
+    expect(response.isLeft()).toBe(true);
+    expect(response.value.getErrorValue()).toBe(
+      'Unable to find a task with id some-random-id'
+    );
+    expect(tasks.length).toBe(1);
   });
 });

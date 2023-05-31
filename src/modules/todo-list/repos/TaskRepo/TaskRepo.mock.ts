@@ -7,41 +7,38 @@ export class MockTaskRepo implements ITaskRepo {
   constructor(tasks: Array<Task>) {
     this.tasks = new Set(tasks);
   }
-  getCompletedTasks(getTasksParams: GetTasksParams): Promise<Task[]> {
-    const { offset, limit, sortBy } = getTasksParams;
+  getTasks(getTasksParams: GetTasksParams): Promise<Task[]> {
+    const { offset, limit, sortBy, taskType } = getTasksParams;
     const results = [...this.tasks]
-      .filter((task) => task.isCompleted)
+      .filter((task) => {
+        switch (taskType) {
+          case 'completed': {
+            return task.isCompleted.value === true;
+          }
+
+          case 'uncompleted': {
+            return task.isCompleted.value === false;
+          }
+
+          default:
+            return true;
+        }
+      })
       .slice(offset, limit + 1);
 
     if (sortBy === 'dueDateDesc') {
       return Promise.resolve(
-        results.sort((a, b) => b.dueDate.getTime() - a.dueDate.getTime())
+        results.sort(
+          (a, b) => b.dueDate.value.getTime() - a.dueDate.value.getTime()
+        )
       );
     }
 
     if (sortBy === 'dueDateAsc') {
       return Promise.resolve(
-        results.sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
-      );
-    }
-    return Promise.resolve(results);
-  }
-
-  getUncompletedTasks(getTasksParams: GetTasksParams): Promise<Task[]> {
-    const { offset, limit, sortBy } = getTasksParams;
-    const results = [...this.tasks]
-      .filter((task) => !task.isCompleted)
-      .slice(offset, limit + 1);
-
-    if (sortBy === 'dueDateDesc') {
-      return Promise.resolve(
-        results.sort((a, b) => b.dueDate.getTime() - a.dueDate.getTime())
-      );
-    }
-
-    if (sortBy === 'dueDateAsc') {
-      return Promise.resolve(
-        results.sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+        results.sort(
+          (a, b) => a.dueDate.value.getTime() - b.dueDate.value.getTime()
+        )
       );
     }
     return Promise.resolve(results);

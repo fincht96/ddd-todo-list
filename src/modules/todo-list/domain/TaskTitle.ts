@@ -1,3 +1,5 @@
+import { Result } from '../../../shared/core/Result';
+
 interface TaskTitleProps {
   value: string;
 }
@@ -16,19 +18,21 @@ export class TaskTitle {
     this.props = props;
   }
 
-  public static create(props: TaskTitleProps): TaskTitle {
+  public static create(props: TaskTitleProps): Result<TaskTitle> {
+    if (typeof props.value !== 'string') {
+      return Result.fail<TaskTitle>(`Task title value must be of type string`);
+    }
+
     if (props.value.length > TaskTitle.maxLength) {
-      throw new Error(
-        `Task title must have a length less than ${TaskTitle.maxLength} characters`
+      return Result.fail<TaskTitle>(
+        `Task title value must have a length less than ${TaskTitle.maxLength} characters`
       );
     }
-
     if (props.value.length < TaskTitle.minLength) {
-      throw new Error(
-        `Task title must have a length greater than ${TaskTitle.minLength} characters`
+      return Result.fail<TaskTitle>(
+        `Task title value must have a length greater than ${TaskTitle.minLength} characters`
       );
     }
-
-    return new TaskTitle(props);
+    return Result.ok<TaskTitle>(new TaskTitle(props));
   }
 }

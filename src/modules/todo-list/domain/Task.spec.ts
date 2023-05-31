@@ -1,47 +1,85 @@
 import { Task, TaskProps } from './Task';
 import { TaskTitle } from './TaskTitle';
 import { TaskDescription } from './TaskDescription';
+import { TaskDueDate } from './TaskDueDate';
+import { TaskCompleted } from './TaskCompleted';
 
 describe('Task', () => {
-  const currentDate = new Date();
-  const newDate = new Date(currentDate.getTime() + 60);
+  const firstDate = new Date(Date.now() + 60 * 1000);
+  const secondDate = new Date(Date.now() + 60 * 1000 * 1000);
 
   const oldProps: TaskProps = {
-    title: TaskTitle.create({ value: 'Example title' }),
+    title: TaskTitle.create({ value: 'Example title' }).getValue(),
     description: TaskDescription.create({
       value: 'This is an example description'
-    }),
-    dueDate: currentDate,
-    isCompleted: false
+    }).getValue(),
+    dueDate: TaskDueDate.create({ value: firstDate.getTime() }).getValue(),
+    isCompleted: TaskCompleted.create({ value: false }).getValue()
   };
 
   const newProps: TaskProps = {
-    title: TaskTitle.create({ value: 'Another Example title' }),
+    title: TaskTitle.create({ value: 'Another Example title' }).getValue(),
     description: TaskDescription.create({
-      value: 'This is another example description'
-    }),
-    dueDate: newDate,
-    isCompleted: true
+      value: 'Another example description'
+    }).getValue(),
+    dueDate: TaskDueDate.create({ value: secondDate.getTime() }).getValue(),
+    isCompleted: TaskCompleted.create({ value: true }).getValue()
   };
 
   test('should create task', () => {
-    const task = Task.create(oldProps);
-    expect(task.title.value).toEqual('Example title');
-    expect(task.description.value).toEqual('This is an example description');
-    expect(task.dueDate).toEqual(currentDate);
-    expect(task.isCompleted).toEqual(false);
+    const taskOrErrorResult = Task.create(oldProps);
+    expect(taskOrErrorResult.isSuccess).toEqual(true);
+    expect(taskOrErrorResult.isFailure).toEqual(false);
+    expect(taskOrErrorResult.getValue().title).toEqual(oldProps.title);
+    expect(taskOrErrorResult.getValue().description).toEqual(
+      oldProps.description
+    );
+    expect(taskOrErrorResult.getValue().dueDate).toEqual(oldProps.dueDate);
+    expect(taskOrErrorResult.getValue().isCompleted).toEqual(
+      oldProps.isCompleted
+    );
+  });
+
+  test('should not create task, missing prop values', () => {
+    const { title, ...rest } = oldProps;
+    const invalidProps = rest as unknown as TaskProps;
+    const taskOrErrorResult = Task.create({ ...invalidProps });
+    expect(taskOrErrorResult.isSuccess).toEqual(false);
+    expect(taskOrErrorResult.isFailure).toEqual(true);
+    expect(taskOrErrorResult.getErrorValue()).toEqual(
+      'title is null or undefined'
+    );
   });
 
   test('should update task', () => {
-    const task = Task.create(oldProps);
-    task.updateTaskProps(newProps);
-    expect(task.title.value).toEqual('Another Example title');
-    expect(task.description.value).toEqual(
-      'This is another example description'
+    const taskOrErrorResult = Task.create(oldProps);
+    expect(taskOrErrorResult.isSuccess).toEqual(true);
+    taskOrErrorResult.getValue().updateTaskProps(newProps);
+    expect(taskOrErrorResult.getValue().title).toEqual(newProps.title);
+    expect(taskOrErrorResult.getValue().description).toEqual(
+      newProps.description
     );
-    expect(task.dueDate).toEqual(newDate);
-    expect(task.isCompleted).toEqual(true);
+    expect(taskOrErrorResult.getValue().dueDate).toEqual(newProps.dueDate);
+    expect(taskOrErrorResult.getValue().isCompleted).toEqual(
+      newProps.isCompleted
+    );
   });
 
-  // should not create a new task with same uid as one already exists
+  test('should not update task, missing prop values', () => {
+    const { description, ...rest } = oldProps;
+    const invalidProps = rest as unknown as TaskProps;
+
+    const taskOrErrorResult = Task.create(oldProps);
+    expect(taskOrErrorResult.isSuccess).toEqual(true);
+
+    const updateOrErrorResult = taskOrErrorResult
+      .getValue()
+      .updateTaskProps(invalidProps);
+
+    expect(updateOrErrorResult.isSuccess).toEqual(false);
+    expect(updateOrErrorResult.isFailure).toEqual(true);
+    expect(updateOrErrorResult.getErrorValue()).toEqual(
+      'description is null or undefined'
+    );
+  });
 });
