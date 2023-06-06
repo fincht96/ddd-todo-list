@@ -1,6 +1,6 @@
 import { Result } from '../../../../shared/core/Result';
 import { UseCase } from '../../../../shared/core/UseCase';
-import { ITaskRepo } from '../../repos/TaskRepo/TaskRepo';
+import { ITaskRepo } from '../../repos/TaskRepo';
 import { DeleteTaskDTO } from './DeleteTaskDTO';
 import { Either, left, right } from '../../../../shared/core/Either';
 import * as DeleteTaskError from './DeleteTaskError';

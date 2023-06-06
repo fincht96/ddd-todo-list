@@ -1,5 +1,5 @@
 import { Task } from '../../domain/Task';
-import { ITaskRepo, GetTasksParams } from './TaskRepo';
+import { ITaskRepo, GetTasksParams } from '../TaskRepo';
 
 export class MockTaskRepo implements ITaskRepo {
   private tasks: Set<Task>;

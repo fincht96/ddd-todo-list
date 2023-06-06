@@ -4,7 +4,7 @@ import { TaskCompleted } from '../../domain/TaskCompleted';
 import { TaskDescription } from '../../domain/TaskDescription';
 import { TaskDueDate } from '../../domain/TaskDueDate';
 import { TaskTitle } from '../../domain/TaskTitle';
-import { MockTaskRepo } from '../../repos/TaskRepo/TaskRepo.mock';
+import { MockTaskRepo } from '../../repos/implementations/TaskRepo.mock';
 import { DeleteTask } from './DeleteTask';
 import { DeleteTaskDTO } from './DeleteTaskDTO';
 

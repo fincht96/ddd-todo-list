@@ -3,7 +3,7 @@ import { toError } from '../../../../shared/core/Error';
 import { Result } from '../../../../shared/core/Result';
 import { UseCase } from '../../../../shared/core/UseCase';
 import { Task } from '../../domain/Task';
-import { ITaskRepo } from '../../repos/TaskRepo/TaskRepo';
+import { ITaskRepo } from '../../repos/TaskRepo';
 import { GetTasksDTO } from './GetTasksDTO';
 
 import { UnexpectedError } from '../../../../shared/core/AppError';
