@@ -31,10 +31,8 @@ services:
     volumes:
       - .:/home/app/
       - ./node_modules:/home/app/node_modules
-    environment:
-      - PORT=4000
-      - NODE_ENV=development
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+    env_file:
+      - .env
 
   db:
     image: postgres:14.1-alpine

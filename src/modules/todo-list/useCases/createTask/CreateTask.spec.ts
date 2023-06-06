@@ -1,4 +1,4 @@
-import { MockTaskRepo } from '../../repos/TaskRepo/TaskRepo.mock';
+import { MockTaskRepo } from '../../repos/implementations/TaskRepo.mock';
 import { CreateTask } from './CreateTask';
 import { CreateTaskDTO } from './CreateTaskDTO';
 

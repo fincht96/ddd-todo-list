@@ -9,3 +9,7 @@ yarn workspace @ddd-todo-list/server start:dev
 # how to run test on specific file
 
 yarn jest ^.\*\/filename\.spec\.ts
+
+# how to run migrations locally
+
+DDD_TODO_LIST_DB_HOST=localhost npx sequelize-cli db:migrate

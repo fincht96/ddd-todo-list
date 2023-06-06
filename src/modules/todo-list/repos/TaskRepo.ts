@@ -1,4 +1,4 @@
-import { Task } from '../../domain/Task';
+import { Task } from '../domain/Task';
 
 export interface GetTasksParams {
   offset: number;

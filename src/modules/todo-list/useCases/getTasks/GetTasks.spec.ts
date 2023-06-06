@@ -1,5 +1,5 @@
 import { Task } from '../../domain/Task';
-import { MockTaskRepo } from '../../repos/TaskRepo/TaskRepo.mock';
+import { MockTaskRepo } from '../../repos/implementations/TaskRepo.mock';
 import { TaskProps } from '../../domain/Task';
 import { GetTasks } from './GetTasks';
 import { TaskTitle } from '../../domain/TaskTitle';

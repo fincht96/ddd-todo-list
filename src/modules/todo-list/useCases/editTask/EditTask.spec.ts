@@ -1,9 +1,9 @@
-import { Task, TaskProps } from '../../domain/Task';
+import { Task } from '../../domain/Task';
 import { TaskCompleted } from '../../domain/TaskCompleted';
 import { TaskDescription } from '../../domain/TaskDescription';
 import { TaskDueDate } from '../../domain/TaskDueDate';
 import { TaskTitle } from '../../domain/TaskTitle';
-import { MockTaskRepo } from '../../repos/TaskRepo/TaskRepo.mock';
+import { MockTaskRepo } from '../../repos/implementations/TaskRepo.mock';
 import { EditTask } from './EditTask';
 import { EditTaskDTO } from './EditTaskDTO';
 

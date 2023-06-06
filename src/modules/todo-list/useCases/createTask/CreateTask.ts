@@ -8,7 +8,7 @@ import { TaskCompleted } from '../../domain/TaskCompleted';
 import { TaskDescription } from '../../domain/TaskDescription';
 import { TaskDueDate } from '../../domain/TaskDueDate';
 import { TaskTitle } from '../../domain/TaskTitle';
-import { ITaskRepo } from '../../repos/TaskRepo/TaskRepo';
+import { ITaskRepo } from '../../repos/TaskRepo';
 import { CreateTaskDTO } from './CreateTaskDTO';
 
 type Response = Either<Result<any>, Result<void>>;
