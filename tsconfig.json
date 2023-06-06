@@ -10,7 +10,9 @@
     "outDir": "dist" /* Specify an output folder for all emitted files. */,
     "resolveJsonModule": true /* Enable importing .json files. */,
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    "allowJs": true
   },
   "exclude": ["node_modules", "dist/*", "client/*"],
   "include": ["src/**/*"]
