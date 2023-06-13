@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  _build:
+    image: ddd-todo-list
+    command: ['echo', 'build completed']
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  server-test:
+    image: ddd-todo-list
+    container_name: server-test
+    depends_on:
+      - _build
+    volumes:
+      - .:/home/app
+      - ./node_modules:/home/app/node_modules
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=test
+    depends_on:
+      - db-test
+
+  db-test:
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ddd_todo_list_db
+    ports:
+      - 5433:5432
+
