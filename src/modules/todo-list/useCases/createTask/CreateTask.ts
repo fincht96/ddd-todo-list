@@ -44,7 +44,9 @@ export class CreateTask implements UseCase<CreateTaskDTO, Promise<Response>> {
         return left(isCompletedOrError);
       }
 
-      const dueDateOrError = TaskDueDate.create({ value: request.dueDateMs });
+      const dueDateOrError = TaskDueDate.create({
+        value: request.dueDateISO
+      });
 
       if (dueDateOrError.isFailure) {
         return left(dueDateOrError);

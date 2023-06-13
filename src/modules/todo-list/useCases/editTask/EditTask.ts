@@ -44,7 +44,7 @@ export class EditTask implements UseCase<EditTaskDTO, Response> {
         return left(isCompletedOrError);
       }
 
-      const dueDateOrError = TaskDueDate.create({ value: request.dueDateMs });
+      const dueDateOrError = TaskDueDate.create({ value: request.dueDateISO });
 
       if (dueDateOrError.isFailure) {
         return left(dueDateOrError);

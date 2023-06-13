@@ -12,7 +12,7 @@ describe('CreateTask', () => {
       title: 'A test title',
       description: 'A test description',
       isCompleted: false,
-      dueDateMs: dueDate.getTime()
+      dueDateISO: dueDate.toISOString()
     };
 
     const createTaskOrErrorResult = await createTaskUseCase.execute(dto);
@@ -28,7 +28,9 @@ describe('CreateTask', () => {
     expect(uncompletedTasks.length).toBe(1);
     expect(uncompletedTasks[0].title.value).toBe(dto.title);
     expect(uncompletedTasks[0].description.value).toBe(dto.description);
-    expect(uncompletedTasks[0].dueDate.value.getTime()).toBe(dto.dueDateMs);
+    expect(uncompletedTasks[0].dueDate.value.toISOString()).toBe(
+      dto.dueDateISO
+    );
     expect(uncompletedTasks[0].isCompleted.value).toBe(dto.isCompleted);
   });
 
@@ -46,7 +48,7 @@ describe('CreateTask', () => {
     expect(createTaskOrErrorResult.isLeft()).toBe(true);
     expect(createTaskOrErrorResult.value.isFailure).toBe(true);
     expect(createTaskOrErrorResult.value.getErrorValue()).toBe(
-      'Task due date value must be of type number'
+      'Task due date value must be of type ISO 8601 string'
     );
   });
 });

@@ -17,7 +17,9 @@ describe('DeleteTask', () => {
       description: TaskDescription.create({
         value: 'This is an example description'
       }).getValue(),
-      dueDate: TaskDueDate.create({ value: firstDate.getTime() }).getValue(),
+      dueDate: TaskDueDate.create({
+        value: firstDate.toISOString()
+      }).getValue(),
       isCompleted: TaskCompleted.create({ value: false }).getValue()
     });
 
@@ -50,7 +52,9 @@ describe('DeleteTask', () => {
       description: TaskDescription.create({
         value: 'This is an example description'
       }).getValue(),
-      dueDate: TaskDueDate.create({ value: firstDate.getTime() }).getValue(),
+      dueDate: TaskDueDate.create({
+        value: firstDate.toISOString()
+      }).getValue(),
       isCompleted: TaskCompleted.create({ value: false }).getValue()
     });
 

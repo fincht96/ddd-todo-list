@@ -11,8 +11,10 @@ export class TaskMap {
       description: TaskDescription.create({
         value: raw.description
       }).getValue(),
-      dueDate: TaskDueDate.create({ value: raw.dueDateMs }).getValue(),
-      isCompleted: TaskCompleted.create({ value: raw.isCompleted }).getValue()
+      dueDate: TaskDueDate.create({
+        value: new Date(raw.due_date).toISOString()
+      }).getValue(),
+      isCompleted: TaskCompleted.create({ value: raw.is_completed }).getValue()
     };
 
     const taskOrError = Task.create(props);
@@ -30,8 +32,7 @@ export class TaskMap {
       title: task.title.value,
       description: task.description.value,
       is_completed: task.isCompleted.value,
-      due_date: task.dueDate.value.toString(),
-      updatedAt: new Date().toString()
+      due_date: task.dueDate.value.toISOString()
     };
   }
 }

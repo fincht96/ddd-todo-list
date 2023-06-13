@@ -2,6 +2,6 @@ export interface EditTaskDTO {
   title: string;
   description: string;
   isCompleted: boolean;
-  dueDateMs: number;
+  dueDateISO: string;
   taskId: string;
 }
