@@ -10,6 +10,16 @@ yarn workspace @ddd-todo-list/server start:dev
 
 yarn jest ^.\*\/filename\.spec\.ts
 
-# how to run migrations locally
+# Running migrations locally
 
 DDD_TODO_LIST_DB_HOST=localhost npx sequelize-cli db:migrate
+
+# Running tests
+
+# Unit
+
+yarn test:unit:server
+
+# Integration
+
+docker-compose -f docker-compose.test.yml run server-test yarn test:int:server

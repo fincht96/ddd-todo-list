@@ -32,9 +32,6 @@ declare const connection: Sequelize;
 
 export {
   databaseCredentials,
-  NODE_ENV,
-  DDD_TODO_LIST_IS_PRODUCTION,
-  CLEARDB_DATABASE_URL,
   username,
   password,
   database,

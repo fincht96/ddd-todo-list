@@ -13,7 +13,7 @@ describe('Task', () => {
     description: TaskDescription.create({
       value: 'This is an example description'
     }).getValue(),
-    dueDate: TaskDueDate.create({ value: firstDate.getTime() }).getValue(),
+    dueDate: TaskDueDate.create({ value: firstDate.toISOString() }).getValue(),
     isCompleted: TaskCompleted.create({ value: false }).getValue()
   };
 
@@ -22,7 +22,7 @@ describe('Task', () => {
     description: TaskDescription.create({
       value: 'Another example description'
     }).getValue(),
-    dueDate: TaskDueDate.create({ value: secondDate.getTime() }).getValue(),
+    dueDate: TaskDueDate.create({ value: secondDate.toISOString() }).getValue(),
     isCompleted: TaskCompleted.create({ value: true }).getValue()
   };
 
@@ -41,6 +41,7 @@ describe('Task', () => {
   });
 
   test('should not create task, missing prop values', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { title, ...rest } = oldProps;
     const invalidProps = rest as unknown as TaskProps;
     const taskOrErrorResult = Task.create({ ...invalidProps });
@@ -66,6 +67,7 @@ describe('Task', () => {
   });
 
   test('should not update task, missing prop values', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description, ...rest } = oldProps;
     const invalidProps = rest as unknown as TaskProps;
 

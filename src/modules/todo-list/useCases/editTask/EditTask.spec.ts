@@ -17,7 +17,7 @@ describe('EditTask', () => {
     description: TaskDescription.create({
       value: 'This is an example description'
     }).getValue(),
-    dueDate: TaskDueDate.create({ value: dueDate.getTime() }).getValue(),
+    dueDate: TaskDueDate.create({ value: dueDate.toISOString() }).getValue(),
     isCompleted: TaskCompleted.create({ value: false }).getValue()
   });
 
@@ -30,7 +30,7 @@ describe('EditTask', () => {
       title: 'new title',
       description: 'new description',
       isCompleted: true,
-      dueDateMs: new Date(completedDate.getTime() + 60).getTime(),
+      dueDateISO: new Date(completedDate.getTime() + 60).toISOString(),
       taskId: taskToEdit.taskId
     };
 
@@ -41,7 +41,9 @@ describe('EditTask', () => {
 
     expect(updatedTask.title.value).toBe(editTaskDTO.title);
     expect(updatedTask.description.value).toBe(editTaskDTO.description);
-    expect(updatedTask.dueDate.value.getTime()).toBe(editTaskDTO.dueDateMs);
+    expect(updatedTask.dueDate.value.toISOString()).toBe(
+      editTaskDTO.dueDateISO
+    );
     expect(updatedTask.isCompleted.value).toBe(editTaskDTO.isCompleted);
   });
 
@@ -52,7 +54,7 @@ describe('EditTask', () => {
       title: 'new title',
       description: 'new description',
       isCompleted: true,
-      dueDateMs: new Date(completedDate.getTime() + 60).getTime(),
+      dueDateISO: new Date(completedDate.getTime() + 60).toISOString(),
       taskId: taskToEdit.taskId
     };
 
@@ -71,7 +73,7 @@ describe('EditTask', () => {
       title: 'new title',
       description: 'new description',
       isCompleted: true,
-      dueDateMs: new Date(completedDate.getTime() + 60).getTime(),
+      dueDateISO: new Date(completedDate.getTime() + 60).toISOString(),
       taskId: taskToEdit.taskId
     };
 

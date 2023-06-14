@@ -12,7 +12,7 @@ describe('CreateTaskController', () => {
     title: 'an example title',
     description: 'a long description',
     isCompleted: false,
-    dueDateMs: new Date(Date.now() + 60 * 1000 * 3600).getTime()
+    dueDateISO: new Date(Date.now() + 60 * 1000 * 3600).toISOString()
   };
 
   beforeEach(() => {
@@ -38,7 +38,9 @@ describe('CreateTaskController', () => {
     expect(tasks.length).toBe(1);
     expect(tasks[0].title.value).toBe(requestMockBody.title);
     expect(tasks[0].description.value).toBe(requestMockBody.description);
-    expect(tasks[0].dueDate.value.getTime()).toBe(requestMockBody.dueDateMs);
+    expect(tasks[0].dueDate.value.toISOString()).toBe(
+      requestMockBody.dueDateISO
+    );
     expect(tasks[0].isCompleted.value).toBe(requestMockBody.isCompleted);
   });
 

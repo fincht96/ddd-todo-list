@@ -26,7 +26,7 @@ describe('GetCompletedTasks', () => {
           dueDate: TaskDueDate.create({
             value: new Date(
               currentDateTime.getTime() + index + 1 * 1000 * 60
-            ).getTime()
+            ).toISOString()
           }).getValue()
         };
         return Task.create(props).getValue();
