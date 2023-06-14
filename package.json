@@ -5,7 +5,7 @@
   "scripts": {
     "build:client": "rimraf ./client/build && webpack --mode production",
     "build:server": "rimraf ./dist && tsc",
-    "test:client": "jest client/src --verbose --env=jsdom",
+    "test:unit:client": "jest client/src --verbose --env=jsdom",
     "test:unit:server": "jest src/ --verbose --env=node --testPathIgnorePatterns '/client/src/'  'src/int-tests/'",
     "test:int:server": "jest --verbose --env=node --testPathPattern='src/int-tests(/|$)'",
     "start:dev": "concurrently \"yarn nodemon\" \"yarn webpack --watch --mode development\"",

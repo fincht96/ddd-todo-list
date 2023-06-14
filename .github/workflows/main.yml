@@ -6,9 +6,9 @@ on:
   push:
     branches:
       - prod
-  # pull_request:
-  #   branches:
-  #     - prod
+  pull_request:
+    branches:
+      - prod
 
 jobs:
   ddd_todo_list_deployment:
@@ -36,11 +36,14 @@ jobs:
       - name: Run formatting
         run: yarn format
 
-      - name: Client tests
-        run: yarn test:client
+      - name: Server unit tests
+        run: yarn test:unit:server
 
-      - name: Server tests
-        run: yarn test:server
+      - name: Client unit tests
+        run: yarn test:unit:client
+
+      - name: Server integration tests
+        run: docker-compose -f docker-compose.test.yml run server-test yarn test:int:server
 
       - name: Set up qemu
         uses: docker/setup-qemu-action@v2
