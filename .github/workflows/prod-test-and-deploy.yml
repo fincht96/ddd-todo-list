@@ -1,12 +1,7 @@
-# name of workflow
-name: 'ddd-todo-list ci/cd pipeline'
+name: 'ddd-todo-list prod deployment pipeline'
 
-# triggers for workflow to run
 on:
   push:
-    branches:
-      - prod
-  pull_request:
     branches:
       - prod
 
